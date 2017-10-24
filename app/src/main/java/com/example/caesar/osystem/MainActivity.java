@@ -1,4 +1,4 @@
-package com.example.caesar.osystem;
+﻿package com.example.caesar.osystem;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         monedasAux=5; // Monedas del jugador
         cofreIntentos=3; // Cofres del jugador
 
-        //Puntuaciones
+        //Puntuaciones finales
         //contadorFallos=0;
         //contadorAciertos=0;
         //cofresUsados=0;
