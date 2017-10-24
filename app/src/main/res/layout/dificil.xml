@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.caesar.osystem.Dificil"
+    android:background="@drawable/fondomain">
+
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:padding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447"
+        app:srcCompat="@drawable/abierto"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <EditText
+        android:id="@+id/respuesta"
+        android:layout_width="224dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Adivina la palabra..."
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagen"
+        app:layout_constraintVertical_bias="0.162" />
+
+    <Button
+        android:id="@+id/enviar"
+
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="8dp"
+        android:text="ENVIAR"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintLeft_toRightOf="@+id/respuesta"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagen"
+        app:layout_constraintVertical_bias="0.176"
+
+
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/buttonshape2"
+        android:shadowColor="#ffcc00"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
+
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/textoPista"
+        android:layout_width="174dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="_ _ _ _ _ _ _ _ _"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="28sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.137"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
+
+    <LinearLayout
+        android:layout_width="319dp"
+        android:layout_height="47dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout"
+        android:layout_marginEnd="10dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="108dp"
+            android:layout_height="5dp"
+            app:srcCompat="@drawable/png"
+            tools:layout_editor_absoluteX="159dp"
+            tools:layout_editor_absoluteY="458dp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="108dp"
+            android:layout_height="5dp"
+            app:srcCompat="@drawable/png"
+            tools:layout_editor_absoluteX="159dp"
+            tools:layout_editor_absoluteY="458dp" />
+
+
+        <Button
+            android:id="@+id/aa"
+
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/corazon"
+
+            tools:layout_editor_absoluteY="83dp"
+            tools:layout_editor_absoluteX="236dp" />
+        <TextView
+            android:id="@+id/vidas"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text=""
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="281dp"
+            tools:layout_editor_absoluteY="102dp"/>
+
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+

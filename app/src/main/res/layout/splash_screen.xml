@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreenActivity"
+    android:background="@drawable/fondo">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/icono"
+        android:id="@+id/imageView"
+
+        android:layout_marginBottom="143dp"
+        android:layout_alignBottom="@+id/gifImageView"
+        android:layout_centerHorizontal="true" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:src="@drawable/cargando"
+        android:id="@+id/gifImageView" />
+
+</RelativeLayout>
