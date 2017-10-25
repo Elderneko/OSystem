@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class Menu extends AppCompatActivity {
 
     private Button bt1, bt2;
+    private Bundle datosOpciones;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +27,21 @@ public class Menu extends AppCompatActivity {
 
         bt1=(Button) findViewById(R.id.angry_btn);
         bt2=(Button) findViewById(R.id.angry_btn2);
-        
+
+        // Recojo datos de opciones
+        datosOpciones = this.getIntent().getExtras();
+        if(datosOpciones!=null){
+            Toast.makeText(this, "Sonido: "+datosOpciones.getBoolean("opcionSonido"), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void jugar(View v){
         Intent jugar1=new Intent(this, MainActivity.class);
+        // Si hay datos en el Intent en el que estamos ahora mismo
+        // entonces recoje datos
+        if(datosOpciones!=null){
+            jugar1.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        }
         startActivity(jugar1);
     }
 
@@ -39,6 +52,9 @@ public class Menu extends AppCompatActivity {
 
     public void opciones(View v){
         Intent opciones=new Intent(this, Opciones.class);
+        if(datosOpciones!=null){
+            opciones.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        }
         startActivity(opciones);
     }
 

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
-    private android.view.View vista;
+    private Bundle datosOpciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
         monedasAux = 5; // Monedas del jugador
         cofreIntentos = 3; // Cofres del jugador
 
-        //Puntuaciones
+        //    Puntuaciones
         //contadorFallos=0;
         //contadorAciertos=0;
         //cofresUsados=0;
         contadorPistas = 0; // No modificar
+
+        //Opciones
+        datosOpciones = this.getIntent().getExtras();
 
         //
         botonPista = (Button) findViewById(R.id.pista);
