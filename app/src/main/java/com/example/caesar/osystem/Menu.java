@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class Menu extends AppCompatActivity {
 
-    private Button bt1; Button bt2;
+    private Button bt1, bt2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,11 @@ public class Menu extends AppCompatActivity {
     public void jugardificil(View v){
         Intent jugardificil1=new Intent(this, Dificil.class);
         startActivity(jugardificil1);
+    }
+
+    public void opciones(View v){
+        Intent opciones=new Intent(this, Opciones.class);
+        startActivity(opciones);
     }
 
     public Dialog creaAlerta(String titulo, String mensaje){
