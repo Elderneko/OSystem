@@ -138,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
                     creaAlerta("Saltos", "No te quedan saltos").show();
                 } else {
                     solucion = randomImage();
-                    solucionEdit = cambiaString(solucion);
-                    textoPista.setText(solucionEdit);
-                    saltos(false);
+                    if (solucion != null) {
+                        solucionEdit = cambiaString(solucion);
+                        textoPista.setText(solucionEdit);
+                        saltos(false);
+                    }
                 }
             }
         });
-
-
     }
 
     /**
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
+            botonSaltar.setEnabled(false);
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
             return null;
         }
@@ -202,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Actualiza contador de vidas
+     * Actualiza contador de saltos
      *
-     * @param decision false para restar una moneda, true para sumar una moneda
+     * @param decision false para restar un salto, true para sumar un salto
      */
     public void saltos(boolean decision) {
         if (saltosAux > 1) {
@@ -276,11 +277,15 @@ public class MainActivity extends AppCompatActivity {
         return palabraEdit;
     }
 
+    /**
+     * Metodo que permite abrir un cofre que genera monedas de 1-4
+     * @param v
+     */
     public void cofre(View v) {
         if (cofreIntentos > 0) {
             cofreIntentos--;
             cofres.setText(Integer.toString(cofreIntentos));
-            int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-5
+            int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-4
             monedas.setText(String.valueOf(monedasAux));
             monedasAux = monedasAux + nalt;
             monedas.setText(Integer.toString(monedasAux));

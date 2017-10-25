@@ -108,7 +108,7 @@ public class Dificil extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage(){
-        if(lista.size()>24){ // TODO Controlar el numero de preguntas
+        if(lista.size()>0){ // Se utilizan todas las imagenes que tenemos
             int random=(int)(Math.random()*lista.size());
             String nombre=lista.get(random).toLowerCase();
             int resID= getResources().getIdentifier(nombre,"drawable",getPackageName());
@@ -120,7 +120,6 @@ public class Dificil extends AppCompatActivity {
             // Fin de la partida al acabar las imagenes
             creaAlerta("Fin de la partida","Te han quedado: " + vidasAux + " vidas \n \n Has acertado: "+ contadorAciertos).show();
             botonEnviar.setEnabled(false);
-
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
             return null;
         }
@@ -144,6 +143,10 @@ public class Dificil extends AppCompatActivity {
         return builder.create();
     }
 
+    /**
+     * Metodo auxiliar para crear un texto emergente (Toast)
+     * @param mensaje texto que queremos mostrar
+     */
     public void creaMensaje(String mensaje){
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
@@ -165,7 +168,6 @@ public class Dificil extends AppCompatActivity {
             vidasAux = vidasAux - 1;
             vidas.setText(Integer.toString(vidasAux));
             botonEnviar.setEnabled(false);
-
             respuesta.setEnabled(false);
             creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " +
                     contadorAciertos ).show();
