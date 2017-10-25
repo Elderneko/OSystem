@@ -284,67 +284,34 @@ public class MainActivity extends AppCompatActivity {
             monedas.setText(String.valueOf(monedasAux));
             monedasAux = monedasAux + nalt;
             monedas.setText(Integer.toString(monedasAux));
-            //creaAlerta("Monedas", "Has ganado " + String.valueOf(nalt) + " monedas").show();
-
+            // Creaccion del AlertDialog con gif
             LayoutInflater imagen_alert = LayoutInflater.from(MainActivity.this);
+            //Se carga el layout del gif
             final View vista = imagen_alert.inflate(R.layout.gif, null);
-
-
-
             AlertDialog.Builder titulo = new AlertDialog.Builder(MainActivity.this);
             titulo.setMessage("Has ganado " + String.valueOf(nalt) + " monedas");
-
             titulo.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                 }
             });
-
-
             titulo.setTitle("Cofre");
             titulo.setView(vista);
             titulo.show();
-
-
-
-
-
         } else {
-
-
+            // Creaccion del AlertDialog con la imagen del cofre
             LayoutInflater imagen_alert = LayoutInflater.from(MainActivity.this);
             final View vista = imagen_alert.inflate(R.layout.cofre, null);
-
-
-
             AlertDialog.Builder titulo = new AlertDialog.Builder(MainActivity.this);
             titulo.setMessage("No te quedan mas cofres");
-
             titulo.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                 }
             });
-
-
-
             titulo.setTitle("Cofre");
             titulo.setView(vista);
             titulo.show();
-
-
         }
-
-
-
-
-
     }
 }
-
-
-
-
-
