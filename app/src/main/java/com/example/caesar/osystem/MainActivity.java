@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imagen;
     private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
-    private Button botonPista, botonEnviar, botonSaltar;
+    private Button botonPista, botonEnviar, botonSaltar, botonCofre;
     private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //
         botonPista = (Button) findViewById(R.id.pista);
         botonEnviar = (Button) findViewById(R.id.enviar);
+        botonCofre = (Button) findViewById(R.id.cc);
         imagen = (ImageView) findViewById(R.id.imagen);
         botonSaltar = (Button) findViewById(R.id.aa);
         vidas = (TextView) findViewById(R.id.vidas);
@@ -120,12 +121,17 @@ public class MainActivity extends AppCompatActivity {
         botonPista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (monedasAux < 1) {
-                    monedas(false);
-                } else {
-                    monedas(false);
-                    solucionEdit = letraRandom(solucion, solucionEdit);
-                    textoPista.setText(solucionEdit);
+                // Si en solucionEdit no se encuentra '_'
+                if (solucionEdit.indexOf("_") == -1) {
+                    creaAlerta("Pistas","Eres subnormal o que te pasa?").show();
+                } else{
+                    if (monedasAux < 1) {
+                        monedas(false);
+                    } else {
+                        monedas(false);
+                        solucionEdit = letraRandom(solucion, solucionEdit);
+                        textoPista.setText(solucionEdit);
+                    }
                 }
             }
         });
@@ -165,10 +171,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
+            // Se desactivan todo para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
             botonSaltar.setEnabled(false);
-            respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
+            botonCofre.setEnabled(false);
+            respuesta.setEnabled(false);
             return null;
         }
     }
@@ -267,21 +275,16 @@ public class MainActivity extends AppCompatActivity {
      * @return palabraEdit con una letra revelada
      */
     public String letraRandom(String palabra, String palabraEdit) {
-        // Si en la palabra edit no se encuentra '_'
-        if (palabraEdit.indexOf("_") == -1) {
-            creaAlerta("Pistas","Eres subnormal o que te pasa?").show();
-            return palabraEdit;
-        } else {
-            int random = (int) (Math.random() * palabra.length());
-            if (palabraEdit.charAt(random * 2) == '_') { // Si la palabra es un '_'
-                // Sustituye el '_' por una letra aleatoria
-                palabraEdit = palabraEdit.substring(0, random * 2) + palabra.charAt(random) + palabraEdit.substring(random * 2 + 1, palabraEdit.length());
-            } else { // Si no, significa que la letra esta repetida y vuelve a lanzar la funcion
-                palabraEdit = letraRandom(palabra, palabraEdit);
-            }
-            return palabraEdit;
+        int random = (int) (Math.random() * palabra.length());
+        if (palabraEdit.charAt(random * 2) == '_') { // Si la palabra es un '_'
+            // Sustituye el '_' por una letra aleatoria
+            palabraEdit = palabraEdit.substring(0, random * 2) + palabra.charAt(random) + palabraEdit.substring(random * 2 + 1, palabraEdit.length());
+        } else { // Si no, significa que la letra esta repetida y vuelve a lanzar la funcion
+            palabraEdit = letraRandom(palabra, palabraEdit);
         }
+        return palabraEdit;
     }
+
 
     /**
      * Metodo que permite abrir un cofre que genera monedas de 1-4
