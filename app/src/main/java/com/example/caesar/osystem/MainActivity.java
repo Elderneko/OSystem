@@ -1,10 +1,12 @@
-﻿package com.example.caesar.osystem;
+package com.example.caesar.osystem;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,12 +19,13 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView imagen;
-    private TextView vidas,monedas,textoPista,cofres;
+    private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
-    private Button botonPista,botonEnviar, botonSaltar;
-    private int saltosAux,monedasAux,cofreIntentos, contadorPistas;
-    private ArrayList<String> lista=new ArrayList<String>();
-    private String solucion,solucionEdit;
+    private Button botonPista, botonEnviar, botonSaltar;
+    private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
+    private ArrayList<String> lista = new ArrayList<String>();
+    private String solucion, solucionEdit;
+    private android.view.View vista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +37,26 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide(); // Oculta Titulo de la ventana
 
         // Cambiar esto en funcion de la dificultad
-        saltosAux=5; // Vidas del jugador
-        monedasAux=5; // Monedas del jugador
-        cofreIntentos=3; // Cofres del jugador
+        saltosAux = 5; // Vidas del jugador
+        monedasAux = 5; // Monedas del jugador
+        cofreIntentos = 3; // Cofres del jugador
 
-        //Puntuaciones finales
+        //Puntuaciones
         //contadorFallos=0;
         //contadorAciertos=0;
         //cofresUsados=0;
-        contadorPistas=0; // No modificar
+        contadorPistas = 0; // No modificar
 
         //
-        botonPista=(Button) findViewById(R.id.pista);
-        botonEnviar=(Button) findViewById(R.id.enviar);
-        imagen=(ImageView) findViewById(R.id.imagen);
-        botonSaltar=(Button) findViewById(R.id.aa);
-        vidas=(TextView) findViewById(R.id.vidas);
-        monedas=(TextView) findViewById(R.id.monedas);
-        cofres=(TextView) findViewById(R.id.cofres);
-        respuesta=(EditText) findViewById(R.id.respuesta);
-        textoPista=(TextView) findViewById(R.id.textoPista);
+        botonPista = (Button) findViewById(R.id.pista);
+        botonEnviar = (Button) findViewById(R.id.enviar);
+        imagen = (ImageView) findViewById(R.id.imagen);
+        botonSaltar = (Button) findViewById(R.id.aa);
+        vidas = (TextView) findViewById(R.id.vidas);
+        monedas = (TextView) findViewById(R.id.monedas);
+        cofres = (TextView) findViewById(R.id.cofres);
+        respuesta = (EditText) findViewById(R.id.respuesta);
+        textoPista = (TextView) findViewById(R.id.textoPista);
 
         // Nombres a adivinar, los archivos tienen el mismo nombre pero en minuscula
         lista.add("Abierto");
@@ -90,26 +93,26 @@ public class MainActivity extends AppCompatActivity {
         cofres.setText(Integer.toString(cofreIntentos));
 
         // Primera interaccion automatica
-        solucion=randomImage();
-        solucionEdit=cambiaString(solucion);
+        solucion = randomImage();
+        solucionEdit = cambiaString(solucion);
         textoPista.setText(solucionEdit);
 
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String respuestaAux=respuesta.getText().toString();
+                String respuestaAux = respuesta.getText().toString();
                 respuesta.setText("");
-                if(respuestaAux.equals("")){ // Si no se escribe nada
-                    creaAlerta("Error","No me has dicho ninguna palabra").show();
-                } else if(respuestaAux.equalsIgnoreCase(solucion)){
+                if (respuestaAux.equals("")) { // Si no se escribe nada
+                    creaAlerta("Error", "No me has dicho ninguna palabra").show();
+                } else if (respuestaAux.equalsIgnoreCase(solucion)) {
                     monedas(true); // Si la solucion es correcta se añade una moneda
-                    solucion=randomImage();
-                    if(solucion!=null){
-                        solucionEdit=cambiaString(solucion);
+                    solucion = randomImage();
+                    if (solucion != null) {
+                        solucionEdit = cambiaString(solucion);
                         textoPista.setText(solucionEdit);
                     }
-                } else{
-                    creaAlerta("Fallo","Respuesta incorrecta");
+                } else {
+                    creaMensaje("Respuesta incorrecta");
                 }
             }
         });
@@ -118,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 contadorPistas++;
-                if(monedasAux<1){
+                if (monedasAux < 1) {
                     monedas(false);
                 } else {
                     monedas(false);
-                    solucionEdit=letraRandom(solucion, solucionEdit);
+                    solucionEdit = letraRandom(solucion, solucionEdit);
                     textoPista.setText(solucionEdit);
                 }
             }
@@ -131,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
         botonSaltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(saltosAux<1){
-                    creaAlerta("Saltos","No te quedan saltos").show();
+                if (saltosAux < 1) {
+                    creaAlerta("Saltos", "No te quedan saltos").show();
                 } else {
                     solucion = randomImage();
-                    solucionEdit=cambiaString(solucion);
+                    solucionEdit = cambiaString(solucion);
                     textoPista.setText(solucionEdit);
                     saltos(false);
                 }
@@ -148,20 +151,21 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Metodo que muestra una imagen random de todas la que tenemos "almacenadas"
      * en el arraylist lista
+     *
      * @return devuelve el valor de la imagen
      */
-    public String randomImage(){
-        if(lista.size()>16){ // TODO Controla el numero de preguntas
-            int random=(int)(Math.random()*lista.size());
-            String nombre=lista.get(random).toLowerCase();
-            int resID= getResources().getIdentifier(nombre,"drawable",getPackageName());
+    public String randomImage() {
+        if (lista.size() > 16) { // TODO Controla el numero de preguntas
+            int random = (int) (Math.random() * lista.size());
+            String nombre = lista.get(random).toLowerCase();
+            int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
             return nombre;
-        } else{
+        } else {
             // Puntuaciones
-            creaAlerta("Juego finalizado","Pistas usadas: "+ contadorPistas).show();
+            creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
@@ -171,12 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Metodo auxiliar para crear DialogAlert en pantalla
-     * @param titulo titulo de la ventana
+     *
+     * @param titulo  titulo de la ventana
      * @param mensaje mensaje que queremos mostrar
      * @return un dialogo, hay que usar .show() para que se muestre en pantalla
      */
-    public Dialog creaAlerta(String titulo, String mensaje){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    public Dialog creaAlerta(String titulo, String mensaje) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(mensaje).setTitle(titulo);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -189,26 +194,28 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Metodo auxiliar para crear Toast.makeText en pantalla
+     *
      * @param mensaje
      */
-    public void creaMensaje(String mensaje){
+    public void creaMensaje(String mensaje) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Actualiza contador de vidas
+     *
      * @param decision false para restar una moneda, true para sumar una moneda
      */
-    public void saltos(boolean decision){
-        if(saltosAux>1) {
-            if(decision==false){
+    public void saltos(boolean decision) {
+        if (saltosAux > 1) {
+            if (decision == false) {
                 saltosAux = saltosAux - 1;
-                creaMensaje("Te quedan "+saltosAux+" saltos");
-            }else{
+                creaMensaje("Te quedan " + saltosAux + " saltos");
+            } else {
                 saltosAux = saltosAux + 1;
             }
             vidas.setText(Integer.toString(saltosAux));
-        } else{
+        } else {
             saltosAux = saltosAux - 1;
             vidas.setText(Integer.toString(saltosAux));
         }
@@ -216,25 +223,27 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Actualiza contador de monedas
+     *
      * @param decision, false para restar una moneda, true para sumar una moneda
      */
-    public void monedas(boolean decision){
-        if(decision==false && monedasAux>0){ // Si quiero restar y tengo saldo, lo hago
+    public void monedas(boolean decision) {
+        if (decision == false && monedasAux > 0) { // Si quiero restar y tengo saldo, lo hago
             monedasAux = monedasAux - 1;
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has usado una moneda");
-        } else if(decision==true){ // Si quiero sumar, sumo
+        } else if (decision == true) { // Si quiero sumar, sumo
             monedasAux = monedasAux + 1;
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has ganado una moneda");
-        } else{ // Si quiero restar y no tengo saldo, mensajito
+        } else { // Si quiero restar y no tengo saldo, mensajito
             monedas.setText(Integer.toString(monedasAux));
-            creaAlerta("Monedas","Te has quedado sin monedas").show();
+            creaAlerta("Monedas", "Te has quedado sin monedas").show();
         }
     }
 
     /**
      * Cambia los caracteres de un string por "_ "
+     *
      * @param palabra Palabra a modificar
      * @return Palabra modificada
      */
@@ -251,32 +260,91 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Revela un caracter aleatorio de la palabra que hay que adivinar
-     * @param palabra Palabra solucion
+     *
+     * @param palabra     Palabra solucion
      * @param palabraEdit cambiaString(palabra)
      * @return palabraEdit con una letra revelada
      */
     public String letraRandom(String palabra, String palabraEdit) {
-        int random=(int)(Math.random()*palabra.length());
-        if(palabraEdit.charAt(random*2)=='_') { // Si la palabra es un '_'
+        int random = (int) (Math.random() * palabra.length());
+        if (palabraEdit.charAt(random * 2) == '_') { // Si la palabra es un '_'
             // Sustituye el '_' por una letra aleatoria
-            palabraEdit= palabraEdit.substring(0,random*2)+palabra.charAt(random)+palabraEdit.substring(random*2+1,palabraEdit.length());
+            palabraEdit = palabraEdit.substring(0, random * 2) + palabra.charAt(random) + palabraEdit.substring(random * 2 + 1, palabraEdit.length());
         } else { // Si no, significa que la letra esta repetida y vuelve a lanzar la funcion
-            palabraEdit=letraRandom(palabra, palabraEdit);
+            palabraEdit = letraRandom(palabra, palabraEdit);
         }
         return palabraEdit;
     }
 
     public void cofre(View v) {
-        if (cofreIntentos>0){
+        if (cofreIntentos > 0) {
             cofreIntentos--;
             cofres.setText(Integer.toString(cofreIntentos));
-            int nalt=(int)(Math.random() * 4 + 1); // Rango: 1-5
+            int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-5
             monedas.setText(String.valueOf(monedasAux));
             monedasAux = monedasAux + nalt;
             monedas.setText(Integer.toString(monedasAux));
-            creaAlerta("Monedas", "Has ganado " + String.valueOf(nalt) + " monedas").show();
-        }else{
-            creaAlerta("Cofres","No te quedan mas cofres").show();
+            //creaAlerta("Monedas", "Has ganado " + String.valueOf(nalt) + " monedas").show();
+
+            LayoutInflater imagen_alert = LayoutInflater.from(MainActivity.this);
+            final View vista = imagen_alert.inflate(R.layout.gif, null);
+
+
+
+            AlertDialog.Builder titulo = new AlertDialog.Builder(MainActivity.this);
+            titulo.setMessage("Has ganado " + String.valueOf(nalt) + " monedas");
+
+            titulo.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+
+            titulo.setTitle("Cofre");
+            titulo.setView(vista);
+            titulo.show();
+
+
+
+
+
+        } else {
+
+
+            LayoutInflater imagen_alert = LayoutInflater.from(MainActivity.this);
+            final View vista = imagen_alert.inflate(R.layout.cofre, null);
+
+
+
+            AlertDialog.Builder titulo = new AlertDialog.Builder(MainActivity.this);
+            titulo.setMessage("No te quedan mas cofres");
+
+            titulo.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+
+
+            titulo.setTitle("Cofre");
+            titulo.setView(vista);
+            titulo.show();
+
+
         }
+
+
+
+
+
     }
 }
+
+
+
+
+

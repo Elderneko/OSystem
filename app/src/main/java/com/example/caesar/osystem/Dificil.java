@@ -20,9 +20,10 @@ public class Dificil extends AppCompatActivity {
     private TextView vidas,textoPista;
     private EditText respuesta;
     private Button botonEnviar;
-    private int vidasAux;
+    private int vidasAux , contadorAciertos;
     private ArrayList<String> lista=new ArrayList<String>();
     private String solucion,solucionEdit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class Dificil extends AppCompatActivity {
                     creaMensaje("No hay valor");
                 } else if(respuestaAux.equalsIgnoreCase(solucion)){
                     solucion=randomImage();
+                    contadorAciertos ++;
                     if(solucion!=null){
                         solucionEdit=cambiaString(solucion);
                         textoPista.setText(solucionEdit);
@@ -105,7 +107,7 @@ public class Dificil extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage(){
-        if(lista.size()>16){ // TODO Controlar el numero de preguntas
+        if(lista.size()>24){ // TODO Controlar el numero de preguntas
             int random=(int)(Math.random()*lista.size());
             String nombre=lista.get(random).toLowerCase();
             int resID= getResources().getIdentifier(nombre,"drawable",getPackageName());
@@ -114,7 +116,7 @@ public class Dificil extends AppCompatActivity {
             lista.remove(random);
             return nombre;
         } else{
-            creaAlerta("Juego finalizado","Tienes "+ vidasAux).show();
+            creaAlerta("Juego finalizado","Te han quedado: " + vidasAux + " vidas \n Has acertado: "+ contadorAciertos+1).show();//+ 1 (El contador cuenta -1)
             botonEnviar.setEnabled(false);
 
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
@@ -163,7 +165,8 @@ public class Dificil extends AppCompatActivity {
             botonEnviar.setEnabled(false);
 
             respuesta.setEnabled(false);
-            creaAlerta("Fin de la partida","Te has quedado sin vidas crack").show();
+            creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " + contadorAciertos).show();
+
         }
     }
 
