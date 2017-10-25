@@ -2,6 +2,7 @@ package com.example.caesar.osystem;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
+            risas(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
             return nombre;
         } else {
             // Puntuaciones
@@ -326,6 +328,16 @@ public class MainActivity extends AppCompatActivity {
             titulo.setTitle("Cofre");
             titulo.setView(vista);
             titulo.show();
+        }
+    }
+
+    /**
+     * EasterEgg de la aplicacion
+     * @param s
+     */
+    public void risas(String s){
+        if(s.equalsIgnoreCase("Hugo")){
+            MediaPlayer.create(this, R.raw.egg).start();
         }
     }
 }
