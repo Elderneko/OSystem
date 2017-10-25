@@ -3,6 +3,7 @@ package com.example.caesar.osystem;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -242,6 +243,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void monedas(boolean decision) {
         if (decision == false && monedasAux > 0) { // Si quiero restar y tengo saldo, lo hago
+            if(sonido!=null){
+                sonido.stop();
+            }
+            if(datosOpciones.getBoolean("opcionSonido")){
+                sonido= MediaPlayer.create(this,R.raw.coin);
+                sonido.start();
+            }
             monedasAux = monedasAux - 1;
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has usado una moneda");
@@ -337,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Metodo que activa los sonidos por imagen si la opcion sonido esta activada
-     * @param s
+     * @param s nombreImagen
      */
     public void sonidoPorImagen(String s){
         if(datosOpciones.getBoolean("opcionSonido")){
@@ -346,8 +354,6 @@ public class MainActivity extends AppCompatActivity {
             if(sonido!=null){
                 sonido.stop();
             }
-            sonido=MediaPlayer.create(this, R.raw.egg);
-            sonido.start();
             if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
                 // Crea objeto sonido y reproduce
                 sonido=MediaPlayer.create(this, R.raw.egg);
