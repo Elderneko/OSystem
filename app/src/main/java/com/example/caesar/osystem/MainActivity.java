@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void monedas(boolean decision) {
         if (decision == false && monedasAux > 0) { // Si quiero restar y tengo saldo, lo hago
+            monedasAux = monedasAux - 1;
             if(sonido!=null){
                 sonido.stop();
             }
@@ -250,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
                 sonido= MediaPlayer.create(this,R.raw.coin);
                 sonido.start();
             }
-            monedasAux = monedasAux - 1;
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has usado una moneda");
             contadorPistas++; // Has usado una pista
