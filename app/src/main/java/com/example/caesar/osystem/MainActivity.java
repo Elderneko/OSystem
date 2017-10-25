@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
+    private MediaPlayer sonido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,12 +172,12 @@ public class MainActivity extends AppCompatActivity {
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
-            risas(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
+            sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
             return nombre;
         } else {
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
-            // Se desactivan todo para que no se pueda interactuar
+            // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
             botonSaltar.setEnabled(false);
@@ -335,12 +336,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * EasterEgg de la aplicacion
+     * Metodo que activa los sonidos por imagen si la opcion sonido esta activada
      * @param s
      */
-    public void risas(String s){
-        if(s.equalsIgnoreCase("Hugo")){
-            MediaPlayer.create(this, R.raw.egg).start();
+    public void sonidoPorImagen(String s){
+        if(datosOpciones.getBoolean("opcionSonido")){
+            // Este if hace que no se monte un sonido encima de otro
+            // Si el objeto sonido existe, lo para
+            if(sonido!=null){
+                sonido.stop();
+            }
+            sonido=MediaPlayer.create(this, R.raw.egg);
+            sonido.start();
+            if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
+                // Crea objeto sonido y reproduce
+                sonido=MediaPlayer.create(this, R.raw.egg);
+                sonido.start();
+            }
         }
     }
 }

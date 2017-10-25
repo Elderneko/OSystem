@@ -37,10 +37,13 @@ public class Menu extends AppCompatActivity {
 
     public void jugar(View v){
         Intent jugar1=new Intent(this, MainActivity.class);
-        // Si hay datos en el Intent en el que estamos ahora mismo
-        // entonces recoje datos
+        // Si hay datos, es que hemos cambiado algo en opciones
+        // Y por tanto se usan las opciones, si no, se usa lo predeterminado
+        // en este caso que opcionSonido sea false
         if(datosOpciones!=null){
             jugar1.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        } else{
+            jugar1.putExtra("opcionSonido",false);
         }
         startActivity(jugar1);
     }
