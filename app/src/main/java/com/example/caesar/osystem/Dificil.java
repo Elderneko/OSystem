@@ -36,6 +36,7 @@ public class Dificil extends AppCompatActivity {
 
         // Cambiar esto en funcion de la dificultad
         vidasAux=3; // Vidas del jugador
+        contadorAciertos=0;
 
         botonEnviar=(Button) findViewById(R.id.enviar);
         imagen=(ImageView) findViewById(R.id.imagen);
@@ -88,8 +89,8 @@ public class Dificil extends AppCompatActivity {
                 if(respuestaAux.equals("")){ // Si no se escribe nada
                     creaMensaje("No hay valor");
                 } else if(respuestaAux.equalsIgnoreCase(solucion)){
+                    contadorAciertos++;
                     solucion=randomImage();
-                    contadorAciertos ++;
                     if(solucion!=null){
                         solucionEdit=cambiaString(solucion);
                         textoPista.setText(solucionEdit);
@@ -116,7 +117,8 @@ public class Dificil extends AppCompatActivity {
             lista.remove(random);
             return nombre;
         } else{
-            creaAlerta("Juego finalizado","Te han quedado: " + vidasAux + " vidas \n Has acertado: "+ contadorAciertos+1).show();//+ 1 (El contador cuenta -1)
+            // Fin de la partida al acabar las imagenes
+            creaAlerta("Fin de la partida","Te han quedado: " + vidasAux + " vidas \n \n Has acertado: "+ contadorAciertos).show();
             botonEnviar.setEnabled(false);
 
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
@@ -165,8 +167,8 @@ public class Dificil extends AppCompatActivity {
             botonEnviar.setEnabled(false);
 
             respuesta.setEnabled(false);
-            creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " + contadorAciertos).show();
-
+            creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " +
+                    contadorAciertos ).show();
         }
     }
 
