@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         botonPista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorPistas++;
                 if (monedasAux < 1) {
                     monedas(false);
                 } else {
@@ -232,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
             monedasAux = monedasAux - 1;
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has usado una moneda");
+            contadorPistas++; // Has usado una pista
         } else if (decision == true) { // Si quiero sumar, sumo
             monedasAux = monedasAux + 1;
             monedas.setText(Integer.toString(monedasAux));
@@ -262,19 +262,25 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Revela un caracter aleatorio de la palabra que hay que adivinar
      *
-     * @param palabra     Palabra solucion
+     * @param palabra Palabra solucion
      * @param palabraEdit cambiaString(palabra)
      * @return palabraEdit con una letra revelada
      */
     public String letraRandom(String palabra, String palabraEdit) {
-        int random = (int) (Math.random() * palabra.length());
-        if (palabraEdit.charAt(random * 2) == '_') { // Si la palabra es un '_'
-            // Sustituye el '_' por una letra aleatoria
-            palabraEdit = palabraEdit.substring(0, random * 2) + palabra.charAt(random) + palabraEdit.substring(random * 2 + 1, palabraEdit.length());
-        } else { // Si no, significa que la letra esta repetida y vuelve a lanzar la funcion
-            palabraEdit = letraRandom(palabra, palabraEdit);
+        // Si en la palabra edit no se encuentra '_'
+        if (palabraEdit.indexOf("_") == -1) {
+            creaAlerta("Pistas","Eres subnormal o que te pasa?").show();
+            return palabraEdit;
+        } else {
+            int random = (int) (Math.random() * palabra.length());
+            if (palabraEdit.charAt(random * 2) == '_') { // Si la palabra es un '_'
+                // Sustituye el '_' por una letra aleatoria
+                palabraEdit = palabraEdit.substring(0, random * 2) + palabra.charAt(random) + palabraEdit.substring(random * 2 + 1, palabraEdit.length());
+            } else { // Si no, significa que la letra esta repetida y vuelve a lanzar la funcion
+                palabraEdit = letraRandom(palabra, palabraEdit);
+            }
+            return palabraEdit;
         }
-        return palabraEdit;
     }
 
     /**
