@@ -35,7 +35,7 @@ public class Dificil extends AppCompatActivity {
         getSupportActionBar().hide(); // Oculta Titulo de la ventana
 
         // Cambiar esto en funcion de la dificultad
-        vidasAux=5; // Vidas del jugador
+        vidasAux=3; // Vidas del jugador
 
         botonEnviar=(Button) findViewById(R.id.enviar);
         imagen=(ImageView) findViewById(R.id.imagen);
