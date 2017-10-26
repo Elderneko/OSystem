@@ -1,13 +1,12 @@
 package com.example.caesar.osystem;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
-    private MediaPlayer sonido;
+    private MediaPlayer sonido,sonido2;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +74,9 @@ public class MainActivity extends AppCompatActivity {
         lista.add("Casino");
         lista.add("Cristiano");
         lista.add("Disparo");
-        lista.add("Emilio");
         lista.add("Emociones");
         lista.add("Frio");
         lista.add("Hospital");
-        lista.add("Hugo");
-        lista.add("Marina");
         lista.add("Messi");
         lista.add("Oxidado");
         lista.add("Palmera");
@@ -94,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
         lista.add("Revilla");
         lista.add("Totti");
 
+        lista.add("Hugo");
+        lista.add("Marina");
+        lista.add("Emilio");
+        lista.add("Fernando");
+        lista.add("Jesus");
+        lista.add("Juan");
+        lista.add("Roberto");
+
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(saltosAux));
         monedas.setText(Integer.toString(monedasAux));
@@ -104,14 +109,30 @@ public class MainActivity extends AppCompatActivity {
         solucionEdit = cambiaString(solucion);
         textoPista.setText(solucionEdit);
 
+        context=this;
+
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String respuestaAux = respuesta.getText().toString();
+                sonidoPorImagen(respuestaAux); // TODO EasterEgg
                 respuesta.setText("");
                 if (respuestaAux.equals("")) { // Si no se escribe nada
+                    // Sonido fallos
+                    if(sonido!=null){
+                        sonido.stop();
+                    }
+                    if(datosOpciones.getBoolean("opcionSonido")){
+                        sonido= MediaPlayer.create(context,R.raw.error);
+                        sonido.start();
+                    }
                     creaAlerta("Error", "No me has dicho ninguna palabra").show();
-                } else if (respuestaAux.equalsIgnoreCase(solucion)) {
+                } else if (respuestaAux.equalsIgnoreCase(solucion)){
+                    // Sonido acierto
+                    if(datosOpciones.getBoolean("opcionSonido")){
+                        sonido= MediaPlayer.create(context,R.raw.acierto);
+                        sonido.start();
+                    }
                     monedas(true); // Si la solucion es correcta se añade una moneda
                     solucion = randomImage();
                     if (solucion != null) {
@@ -119,6 +140,14 @@ public class MainActivity extends AppCompatActivity {
                         textoPista.setText(solucionEdit);
                     }
                 } else {
+                    // Sonido fallos
+                    if(sonido!=null){
+                        sonido.stop();
+                    }
+                    if(datosOpciones.getBoolean("opcionSonido")){
+                        sonido= MediaPlayer.create(context,R.raw.error);
+                        sonido.start();
+                    }
                     creaMensaje("Respuesta incorrecta");
                 }
             }
@@ -166,16 +195,24 @@ public class MainActivity extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage() {
-        if (lista.size() > 16) { // TODO Controla el numero de preguntas
+        if (lista.size() > (lista.size()-10)) { // Lo que se resta es el numero de preguntas
             int random = (int) (Math.random() * lista.size());
             String nombre = lista.get(random).toLowerCase();
             int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
-            sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
+            //sonidoPorImagen(nombre); //TODO atencion
             return nombre;
         } else {
+            // Sonido victoria
+            if(sonido!=null){
+                sonido.stop();
+            }
+            if(datosOpciones.getBoolean("opcionSonido")){
+                sonido= MediaPlayer.create(context,R.raw.win);
+                sonido.start();
+            }
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
             // Se desactivan todos para que no se pueda interactuar
@@ -225,6 +262,14 @@ public class MainActivity extends AppCompatActivity {
         if (saltosAux > 1) {
             if (decision == false) {
                 saltosAux = saltosAux - 1;
+                // Sonido salto
+                if(sonido!=null){
+                    sonido.stop();
+                }
+                if(datosOpciones.getBoolean("opcionSonido")){
+                    sonido= MediaPlayer.create(context,R.raw.jump);
+                    sonido.start();
+                }
                 creaMensaje("Te quedan " + saltosAux + " saltos");
             } else {
                 saltosAux = saltosAux + 1;
@@ -244,11 +289,12 @@ public class MainActivity extends AppCompatActivity {
     public void monedas(boolean decision) {
         if (decision == false && monedasAux > 0) { // Si quiero restar y tengo saldo, lo hago
             monedasAux = monedasAux - 1;
+            // Sonido moneda
             if(sonido!=null){
                 sonido.stop();
             }
             if(datosOpciones.getBoolean("opcionSonido")){
-                sonido= MediaPlayer.create(this,R.raw.coin);
+                sonido= MediaPlayer.create(context,R.raw.coin);
                 sonido.start();
             }
             monedas.setText(Integer.toString(monedasAux));
@@ -326,6 +372,14 @@ public class MainActivity extends AppCompatActivity {
             titulo.setTitle("Cofre");
             titulo.setView(vista);
             titulo.show();
+            // Sonido cofre
+            if(sonido!=null){
+                sonido.stop();
+            }
+            if(datosOpciones.getBoolean("opcionSonido")){
+                sonido= MediaPlayer.create(context,R.raw.cofre);
+                sonido.start();
+            }
         } else {
             // Creaccion del AlertDialog con la imagen del cofre
             LayoutInflater imagen_alert = LayoutInflater.from(MainActivity.this);
@@ -354,10 +408,12 @@ public class MainActivity extends AppCompatActivity {
             if(sonido!=null){
                 sonido.stop();
             }
-            if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
-                // Crea objeto sonido y reproduce
-                sonido=MediaPlayer.create(this, R.raw.egg);
-                sonido.start();
+            if(sonido2!=null){
+                sonido2.stop();
+            }
+            if(s.equalsIgnoreCase("Mercoin")){ // Sonido especial de Hugo
+                sonido2=MediaPlayer.create(context, R.raw.egg);
+                sonido2.start();
             }
         }
     }

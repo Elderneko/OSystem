@@ -50,6 +50,11 @@ public class Menu extends AppCompatActivity {
 
     public void jugardificil(View v){
         Intent jugardificil1=new Intent(this, Dificil.class);
+        if(datosOpciones!=null){
+            jugardificil1.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        } else{
+            jugardificil1.putExtra("opcionSonido",false);
+        }
         startActivity(jugardificil1);
     }
 
@@ -74,6 +79,9 @@ public class Menu extends AppCompatActivity {
     }
 
     public void info(View v){
-        creaAlerta("Info","Okay").show();
+        creaAlerta("Tutorial","Existen dos modos de juego:\n" +
+                "Modo fácil: tienes ayudas desde cofres, monedas y saltos.\n" +
+                "Modo difícil: no tienes ayudas y por cada error pierdes una vida.\n\n" +
+                "Trabajo realizado por: Cesar, Javier, Rubén, David y Oliver").show();
     }
 }
