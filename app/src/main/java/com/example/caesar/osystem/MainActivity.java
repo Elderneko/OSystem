@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String respuestaAux = respuesta.getText().toString();
+                sonidoPorImagen(respuestaAux); // TODO EasterEgg
                 respuesta.setText("");
                 if (respuestaAux.equals("")) { // Si no se escribe nada
                     // Sonido fallos
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
-            sonidoPorImagen(nombre); //TODO atencion
+            //sonidoPorImagen(nombre); //TODO atencion
             return nombre;
         } else {
             // Sonido victoria
@@ -404,10 +405,13 @@ public class MainActivity extends AppCompatActivity {
         if(datosOpciones.getBoolean("opcionSonido")){
             // Este if hace que no se monte un sonido encima de otro
             // Si el objeto sonido existe, lo para
+            if(sonido!=null){
+                sonido.stop();
+            }
             if(sonido2!=null){
                 sonido2.stop();
             }
-            if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
+            if(s.equalsIgnoreCase("Mercoin")){ // Sonido especial de Hugo
                 sonido2=MediaPlayer.create(context, R.raw.egg);
                 sonido2.start();
             }
