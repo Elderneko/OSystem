@@ -61,12 +61,9 @@ public class Dificil extends AppCompatActivity {
         lista.add("Casino");
         lista.add("Cristiano");
         lista.add("Disparo");
-        lista.add("Emilio");
         lista.add("Emociones");
         lista.add("Frio");
         lista.add("Hospital");
-        lista.add("Hugo");
-        lista.add("Marina");
         lista.add("Messi");
         lista.add("Oxidado");
         lista.add("Palmera");
@@ -80,6 +77,14 @@ public class Dificil extends AppCompatActivity {
         lista.add("Velocidad");
         lista.add("Revilla");
         lista.add("Totti");
+
+        lista.add("Hugo");
+        lista.add("Marina");
+        lista.add("Emilio");
+        lista.add("Fernando");
+        lista.add("Jesus");
+        lista.add("Juan");
+        lista.add("Roberto");
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(vidasAux));

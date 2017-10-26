@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
-    private MediaPlayer sonido;
+    private MediaPlayer sonido,sonido2;
     private Context context;
 
     @Override
@@ -94,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
         lista.add("Hugo");
         lista.add("Marina");
         lista.add("Emilio");
+        lista.add("Fernando");
+        lista.add("Jesus");
+        lista.add("Juan");
+        lista.add("Roberto");
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(saltosAux));
@@ -190,14 +194,14 @@ public class MainActivity extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage() {
-        if (lista.size() > 16) { // TODO Controla el numero de preguntas
+        if (lista.size() > (lista.size()-10)) { // Lo que se resta es el numero de preguntas
             int random = (int) (Math.random() * lista.size());
             String nombre = lista.get(random).toLowerCase();
             int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
-            sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
+            sonidoPorImagen(nombre); //TODO atencion
             return nombre;
         } else {
             // Sonido victoria
@@ -400,13 +404,12 @@ public class MainActivity extends AppCompatActivity {
         if(datosOpciones.getBoolean("opcionSonido")){
             // Este if hace que no se monte un sonido encima de otro
             // Si el objeto sonido existe, lo para
-            if(sonido!=null){
-                sonido.stop();
+            if(sonido2!=null){
+                sonido2.stop();
             }
             if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
-                // Crea objeto sonido y reproduce
-                sonido=MediaPlayer.create(context, R.raw.egg);
-                sonido.start();
+                sonido2=MediaPlayer.create(context, R.raw.egg);
+                sonido2.start();
             }
         }
     }
