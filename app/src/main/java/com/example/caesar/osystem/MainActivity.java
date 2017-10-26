@@ -221,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                 sonido.start();
             }
             // Puntuaciones
-            creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
-     
+            creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas+"\n"+"Cofres Usados: " + cofresUsados+"\n"+"Aciertos: " + contadorAciertos+"\n"+"Fallos: " + contadorFallos).show();
+
             // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
