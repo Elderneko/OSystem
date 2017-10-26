@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icono"
+        android:icon="@mipmap/iconphoto"
         android:label="Photo Quiz"
-        android:roundIcon="@drawable/icono"
+        android:roundIcon="@mipmap/iconphoto"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
