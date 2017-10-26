@@ -2,6 +2,8 @@ package com.example.caesar.osystem;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imagen;
     private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
-    private Button botonPista, botonEnviar, botonSaltar;
+    private Button botonPista, botonEnviar, botonSaltar, botonCofre;
     private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
-    private android.view.View vista;
+    private Bundle datosOpciones;
+    private MediaPlayer sonido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +44,19 @@ public class MainActivity extends AppCompatActivity {
         monedasAux = 5; // Monedas del jugador
         cofreIntentos = 3; // Cofres del jugador
 
-        //Puntuaciones
+        //    Puntuaciones
         //contadorFallos=0;
         //contadorAciertos=0;
         //cofresUsados=0;
         contadorPistas = 0; // No modificar
 
+        //Opciones
+        datosOpciones = this.getIntent().getExtras();
+
         //
         botonPista = (Button) findViewById(R.id.pista);
         botonEnviar = (Button) findViewById(R.id.enviar);
+        botonCofre = (Button) findViewById(R.id.cc);
         imagen = (ImageView) findViewById(R.id.imagen);
         botonSaltar = (Button) findViewById(R.id.aa);
         vidas = (TextView) findViewById(R.id.vidas);
@@ -120,13 +127,17 @@ public class MainActivity extends AppCompatActivity {
         botonPista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorPistas++;
-                if (monedasAux < 1) {
-                    monedas(false);
-                } else {
-                    monedas(false);
-                    solucionEdit = letraRandom(solucion, solucionEdit);
-                    textoPista.setText(solucionEdit);
+                // Si en solucionEdit no se encuentra '_'
+                if (solucionEdit.indexOf("_") == -1) {
+                    creaAlerta("Pistas","Eres subnormal o que te pasa?").show();
+                } else{
+                    if (monedasAux < 1) {
+                        monedas(false);
+                    } else {
+                        monedas(false);
+                        solucionEdit = letraRandom(solucion, solucionEdit);
+                        textoPista.setText(solucionEdit);
+                    }
                 }
             }
         });
@@ -138,14 +149,14 @@ public class MainActivity extends AppCompatActivity {
                     creaAlerta("Saltos", "No te quedan saltos").show();
                 } else {
                     solucion = randomImage();
-                    solucionEdit = cambiaString(solucion);
-                    textoPista.setText(solucionEdit);
-                    saltos(false);
+                    if (solucion != null) {
+                        solucionEdit = cambiaString(solucion);
+                        textoPista.setText(solucionEdit);
+                        saltos(false);
+                    }
                 }
             }
         });
-
-
     }
 
     /**
@@ -162,13 +173,17 @@ public class MainActivity extends AppCompatActivity {
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
+            sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
             return nombre;
         } else {
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
+            // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
-            respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
+            botonSaltar.setEnabled(false);
+            botonCofre.setEnabled(false);
+            respuesta.setEnabled(false);
             return null;
         }
     }
@@ -202,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Actualiza contador de vidas
+     * Actualiza contador de saltos
      *
-     * @param decision false para restar una moneda, true para sumar una moneda
+     * @param decision false para restar un salto, true para sumar un salto
      */
     public void saltos(boolean decision) {
         if (saltosAux > 1) {
@@ -229,8 +244,16 @@ public class MainActivity extends AppCompatActivity {
     public void monedas(boolean decision) {
         if (decision == false && monedasAux > 0) { // Si quiero restar y tengo saldo, lo hago
             monedasAux = monedasAux - 1;
+            if(sonido!=null){
+                sonido.stop();
+            }
+            if(datosOpciones.getBoolean("opcionSonido")){
+                sonido= MediaPlayer.create(this,R.raw.coin);
+                sonido.start();
+            }
             monedas.setText(Integer.toString(monedasAux));
             creaMensaje("Has usado una moneda");
+            contadorPistas++; // Has usado una pista
         } else if (decision == true) { // Si quiero sumar, sumo
             monedasAux = monedasAux + 1;
             monedas.setText(Integer.toString(monedasAux));
@@ -261,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Revela un caracter aleatorio de la palabra que hay que adivinar
      *
-     * @param palabra     Palabra solucion
+     * @param palabra Palabra solucion
      * @param palabraEdit cambiaString(palabra)
      * @return palabraEdit con una letra revelada
      */
@@ -276,11 +299,16 @@ public class MainActivity extends AppCompatActivity {
         return palabraEdit;
     }
 
+
+    /**
+     * Metodo que permite abrir un cofre que genera monedas de 1-4
+     * @param v
+     */
     public void cofre(View v) {
         if (cofreIntentos > 0) {
             cofreIntentos--;
             cofres.setText(Integer.toString(cofreIntentos));
-            int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-5
+            int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-4
             monedas.setText(String.valueOf(monedasAux));
             monedasAux = monedasAux + nalt;
             monedas.setText(Integer.toString(monedasAux));
@@ -312,6 +340,25 @@ public class MainActivity extends AppCompatActivity {
             titulo.setTitle("Cofre");
             titulo.setView(vista);
             titulo.show();
+        }
+    }
+
+    /**
+     * Metodo que activa los sonidos por imagen si la opcion sonido esta activada
+     * @param s nombreImagen
+     */
+    public void sonidoPorImagen(String s){
+        if(datosOpciones.getBoolean("opcionSonido")){
+            // Este if hace que no se monte un sonido encima de otro
+            // Si el objeto sonido existe, lo para
+            if(sonido!=null){
+                sonido.stop();
+            }
+            if(s.equalsIgnoreCase("Hugo")){ // Sonido especial de Hugo
+                // Crea objeto sonido y reproduce
+                sonido=MediaPlayer.create(this, R.raw.egg);
+                sonido.start();
+            }
         }
     }
 }

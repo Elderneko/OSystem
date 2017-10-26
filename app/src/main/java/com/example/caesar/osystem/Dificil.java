@@ -36,6 +36,7 @@ public class Dificil extends AppCompatActivity {
 
         // Cambiar esto en funcion de la dificultad
         vidasAux=3; // Vidas del jugador
+        contadorAciertos=0;
 
         botonEnviar=(Button) findViewById(R.id.enviar);
         imagen=(ImageView) findViewById(R.id.imagen);
@@ -88,8 +89,8 @@ public class Dificil extends AppCompatActivity {
                 if(respuestaAux.equals("")){ // Si no se escribe nada
                     creaMensaje("No hay valor");
                 } else if(respuestaAux.equalsIgnoreCase(solucion)){
+                    contadorAciertos++;
                     solucion=randomImage();
-                    contadorAciertos ++;
                     if(solucion!=null){
                         solucionEdit=cambiaString(solucion);
                         textoPista.setText(solucionEdit);
@@ -107,7 +108,7 @@ public class Dificil extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage(){
-        if(lista.size()>24){ // TODO Controlar el numero de preguntas
+        if(lista.size()>0){ // Se utilizan todas las imagenes que tenemos
             int random=(int)(Math.random()*lista.size());
             String nombre=lista.get(random).toLowerCase();
             int resID= getResources().getIdentifier(nombre,"drawable",getPackageName());
@@ -116,9 +117,9 @@ public class Dificil extends AppCompatActivity {
             lista.remove(random);
             return nombre;
         } else{
-            creaAlerta("Juego finalizado","Te han quedado: " + vidasAux + " vidas \n Has acertado: "+ contadorAciertos+1).show();//+ 1 (El contador cuenta -1)
+            // Fin de la partida al acabar las imagenes
+            creaAlerta("Fin de la partida","Te han quedado: " + vidasAux + " vidas \n \n Has acertado: "+ contadorAciertos).show();
             botonEnviar.setEnabled(false);
-
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
             return null;
         }
@@ -142,6 +143,10 @@ public class Dificil extends AppCompatActivity {
         return builder.create();
     }
 
+    /**
+     * Metodo auxiliar para crear un texto emergente (Toast)
+     * @param mensaje texto que queremos mostrar
+     */
     public void creaMensaje(String mensaje){
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
@@ -163,10 +168,9 @@ public class Dificil extends AppCompatActivity {
             vidasAux = vidasAux - 1;
             vidas.setText(Integer.toString(vidasAux));
             botonEnviar.setEnabled(false);
-
             respuesta.setEnabled(false);
-            creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " + contadorAciertos).show();
-
+            creaAlerta("Fin de la partida","Te has quedado sin vidas crack \n \n Has acertado: " +
+                    contadorAciertos ).show();
         }
     }
 

@@ -25,6 +25,9 @@
         <activity android:name=".Dificil"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Opciones"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

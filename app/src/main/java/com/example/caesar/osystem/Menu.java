@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class Menu extends AppCompatActivity {
 
-    private Button bt1; Button bt2;
+    private Button bt1, bt2;
+    private Bundle datosOpciones;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +27,38 @@ public class Menu extends AppCompatActivity {
 
         bt1=(Button) findViewById(R.id.angry_btn);
         bt2=(Button) findViewById(R.id.angry_btn2);
-        
+
+        // Recojo datos de opciones
+        datosOpciones = this.getIntent().getExtras();
+        if(datosOpciones!=null){
+            Toast.makeText(this, "Sonido: "+datosOpciones.getBoolean("opcionSonido"), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void jugar(View v){
         Intent jugar1=new Intent(this, MainActivity.class);
+        // Si hay datos, es que hemos cambiado algo en opciones
+        // Y por tanto se usan las opciones, si no, se usa lo predeterminado
+        // en este caso que opcionSonido sea false
+        if(datosOpciones!=null){
+            jugar1.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        } else{
+            jugar1.putExtra("opcionSonido",false);
+        }
         startActivity(jugar1);
     }
 
     public void jugardificil(View v){
         Intent jugardificil1=new Intent(this, Dificil.class);
         startActivity(jugardificil1);
+    }
+
+    public void opciones(View v){
+        Intent opciones=new Intent(this, Opciones.class);
+        if(datosOpciones!=null){
+            opciones.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        }
+        startActivity(opciones);
     }
 
     public Dialog creaAlerta(String titulo, String mensaje){
