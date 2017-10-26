@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         textoPista = (TextView) findViewById(R.id.textoPista);
 
         // Nombres a adivinar, los archivos tienen el mismo nombre pero en minuscula
+        lista.add("Marina");
         lista.add("Abierto");
         lista.add("Alas");
         lista.add("Altura");
@@ -92,20 +93,24 @@ public class MainActivity extends AppCompatActivity {
         lista.add("Totti");
 
         lista.add("Hugo");
-        lista.add("Marina");
         lista.add("Emilio");
         lista.add("Fernando");
         lista.add("Jesus");
-        lista.add("Juan");
-        lista.add("Roberto");
+        // Mejor que no aparezcan
+        // lista.add("Juan");
+        // lista.add("Roberto");
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(saltosAux));
         monedas.setText(Integer.toString(monedasAux));
         cofres.setText(Integer.toString(cofreIntentos));
 
-        // Primera interaccion automatica
-        solucion = randomImage();
+        // Sale siempre la primera posicion del array
+        solucion = lista.get(0).toLowerCase();
+        int resID = getResources().getIdentifier(solucion, "drawable", getPackageName());
+        imagen.setImageResource(resID);
+        imagen.setVisibility(View.VISIBLE);
+        lista.remove(0);
         solucionEdit = cambiaString(solucion);
         textoPista.setText(solucionEdit);
 
