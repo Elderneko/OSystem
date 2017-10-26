@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
     private Button botonPista, botonEnviar, botonSaltar, botonCofre;
-    private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
+    private int saltosAux, monedasAux, cofreIntentos, contadorPistas, contadorFallos, contadorAciertos, cofresUsados;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         cofreIntentos = 3; // Cofres del jugador
 
         //    Puntuaciones
-        //contadorFallos=0;
-        //contadorAciertos=0;
-        //cofresUsados=0;
+        contadorFallos=0;
+        contadorAciertos=0;
+        cofresUsados=0;
         contadorPistas = 0; // No modificar
 
         //Opciones
@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     monedas(true); // Si la solucion es correcta se añade una moneda
                     solucion = randomImage();
+                    contadorAciertos++;
                     if (solucion != null) {
                         solucionEdit = cambiaString(solucion);
                         textoPista.setText(solucionEdit);
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         sonido.start();
                     }
                     creaMensaje("Respuesta incorrecta");
+                    contadorFallos++;
                 }
             }
         });
@@ -215,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
             }
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
+     
             // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
@@ -353,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
     public void cofre(View v) {
         if (cofreIntentos > 0) {
             cofreIntentos--;
+            cofresUsados++;
             cofres.setText(Integer.toString(cofreIntentos));
             int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-4
             monedas.setText(String.valueOf(monedasAux));
