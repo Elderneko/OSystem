@@ -139,9 +139,10 @@ public class MainActivity extends AppCompatActivity {
                         sonido= MediaPlayer.create(context,R.raw.acierto);
                         sonido.start();
                     }
+                    contadorAciertos++;
                     monedas(true); // Si la solucion es correcta se añade una moneda
                     solucion = randomImage();
-                    contadorAciertos++;
+
                     if (solucion != null) {
                         solucionEdit = cambiaString(solucion);
                         textoPista.setText(solucionEdit);
