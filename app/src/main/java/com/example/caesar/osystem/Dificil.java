@@ -83,8 +83,9 @@ public class Dificil extends AppCompatActivity {
         lista.add("Emilio");
         lista.add("Fernando");
         lista.add("Jesus");
-        lista.add("Juan");
-        lista.add("Roberto");
+        // Mejor que no aparezcan
+        // lista.add("Juan");
+        // lista.add("Roberto");
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(vidasAux));
