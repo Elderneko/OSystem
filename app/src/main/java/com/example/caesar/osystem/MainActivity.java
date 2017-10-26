@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView vidas,monedas,textoPista,cofres;
     private EditText respuesta;
     private Button botonPista,botonEnviar, botonSaltar;
-    private int saltosAux,monedasAux,cofreIntentos, contadorPistas;
+    private int saltosAux,monedasAux,cofreIntentos, contadorFallos, contadorAciertos, cofresUsados, contadorPistas;
     private ArrayList<String> lista=new ArrayList<String>();
     private String solucion,solucionEdit;
 
@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         cofreIntentos=3; // Cofres del jugador
 
         //Puntuaciones finales
-        //contadorFallos=0;
-        //contadorAciertos=0;
-        //cofresUsados=0;
+        contadorFallos=0;
+        contadorAciertos=0;
+        cofresUsados=0;
         contadorPistas=0; // No modificar
 
         //
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     creaAlerta("Error","No me has dicho ninguna palabra").show();
                 } else if(respuestaAux.equalsIgnoreCase(solucion)){
                     monedas(true); // Si la solucion es correcta se añade una moneda
+                    contadorAciertos++;
                     solucion=randomImage();
                     if(solucion!=null){
                         solucionEdit=cambiaString(solucion);
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else{
                     creaAlerta("Fallo","Respuesta incorrecta");
+                    contadorFallos++;
                 }
             }
         });
@@ -161,7 +163,11 @@ public class MainActivity extends AppCompatActivity {
             return nombre;
         } else{
             // Puntuaciones
-            creaAlerta("Juego finalizado","Pistas usadas: "+ contadorPistas).show();
+            creaAlerta("Juego finalizado","Pistas usadas: "+ contadorPistas+
+                    "Cofres usados: " + cofresUsados+
+                    "Aciertos: "+contadorAciertos+
+                    "Fallos: "+contadorFallos
+            ).show();
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
             respuesta.setEnabled(false); // Si el numero de preguntas se supera se acaba el juego
@@ -275,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             monedasAux = monedasAux + nalt;
             monedas.setText(Integer.toString(monedasAux));
             creaAlerta("Monedas", "Has ganado " + String.valueOf(nalt) + " monedas").show();
+            cofresUsados++;
         }else{
             creaAlerta("Cofres","No te quedan mas cofres").show();
         }
