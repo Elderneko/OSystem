@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -199,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             imagen.setImageResource(resID);
             imagen.setVisibility(View.VISIBLE);
             lista.remove(random);
-            // sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
+            sonidoPorImagen(nombre); // TODO EasterEgg al aparecer una imagen puede sonar algo...
             return nombre;
         } else {
             // Sonido victoria

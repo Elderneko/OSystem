@@ -50,6 +50,11 @@ public class Menu extends AppCompatActivity {
 
     public void jugardificil(View v){
         Intent jugardificil1=new Intent(this, Dificil.class);
+        if(datosOpciones!=null){
+            jugardificil1.putExtra("opcionSonido",datosOpciones.getBoolean("opcionSonido"));
+        } else{
+            jugardificil1.putExtra("opcionSonido",false);
+        }
         startActivity(jugardificil1);
     }
 

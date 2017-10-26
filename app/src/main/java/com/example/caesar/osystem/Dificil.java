@@ -1,7 +1,9 @@
 package com.example.caesar.osystem;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +25,9 @@ public class Dificil extends AppCompatActivity {
     private int vidasAux , contadorAciertos;
     private ArrayList<String> lista=new ArrayList<String>();
     private String solucion,solucionEdit;
-
+    private Bundle datosOpciones;
+    private MediaPlayer sonido;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,9 @@ public class Dificil extends AppCompatActivity {
         // Cambiar esto en funcion de la dificultad
         vidasAux=3; // Vidas del jugador
         contadorAciertos=0;
+
+        //Opciones
+        datosOpciones = this.getIntent().getExtras();
 
         botonEnviar=(Button) findViewById(R.id.enviar);
         imagen=(ImageView) findViewById(R.id.imagen);
@@ -81,6 +88,8 @@ public class Dificil extends AppCompatActivity {
         solucionEdit=cambiaString(solucion);
         textoPista.setText(solucionEdit);
 
+        context=this;
+
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +106,14 @@ public class Dificil extends AppCompatActivity {
                     }
                 } else{
                     vidas(false); //  Si la solucion no es correccta, rip 1 vida
+                    // Sonido fallos
+                    if(sonido!=null){
+                        sonido.stop();
+                    }
+                    if(datosOpciones.getBoolean("opcionSonido")){
+                        sonido= MediaPlayer.create(context,R.raw.rip);
+                        sonido.start();
+                    }
                 }
             }
         });
