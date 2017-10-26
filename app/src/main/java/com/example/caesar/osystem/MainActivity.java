@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             }
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
-     
+
             // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
