@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
     private Button botonPista, botonEnviar, botonSaltar, botonCofre;
-    private int saltosAux, monedasAux, cofreIntentos, contadorPistas, contadorFallos, contadorAciertos, cofresUsados;
+    private int saltosAux, monedasAux, cofreIntentos, contadorPistas, contadorFallos, contadorAciertos, cofresUsados, tamanioLista;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // Mejor que no aparezcan
         // lista.add("Juan");
         // lista.add("Roberto");
+        tamanioLista=lista.size();
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(saltosAux));
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage() {
-        if (lista.size() > (lista.size()-10)) { // Lo que se resta es el numero de preguntas
+        if (lista.size() > (tamanioLista-3)) { // Lo que se resta es el numero de preguntas
             int random = (int) (Math.random() * lista.size());
             String nombre = lista.get(random).toLowerCase();
             int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());
