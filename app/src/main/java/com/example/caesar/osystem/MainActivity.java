@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView vidas, monedas, textoPista, cofres;
     private EditText respuesta;
     private Button botonPista, botonEnviar, botonSaltar, botonCofre;
-    private int saltosAux, monedasAux, cofreIntentos, contadorPistas;
+    private int saltosAux, monedasAux, cofreIntentos, contadorPistas, contadorFallos, contadorAciertos, cofresUsados, tamanioLista;
     private ArrayList<String> lista = new ArrayList<String>();
     private String solucion, solucionEdit;
     private Bundle datosOpciones;
@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         cofreIntentos = 3; // Cofres del jugador
 
         //    Puntuaciones
-        //contadorFallos=0;
-        //contadorAciertos=0;
-        //cofresUsados=0;
+        contadorFallos=0;
+        contadorAciertos=0;
+        cofresUsados=0;
         contadorPistas = 0; // No modificar
 
         //Opciones
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         textoPista = (TextView) findViewById(R.id.textoPista);
 
         // Nombres a adivinar, los archivos tienen el mismo nombre pero en minuscula
+        lista.add("Marina");
         lista.add("Abierto");
         lista.add("Alas");
         lista.add("Altura");
@@ -92,20 +93,25 @@ public class MainActivity extends AppCompatActivity {
         lista.add("Totti");
 
         lista.add("Hugo");
-        lista.add("Marina");
         lista.add("Emilio");
         lista.add("Fernando");
         lista.add("Jesus");
-        lista.add("Juan");
-        lista.add("Roberto");
+        // Mejor que no aparezcan
+        // lista.add("Juan");
+        // lista.add("Roberto");
+        tamanioLista=lista.size();
 
         // Muestra vidas y monedas en pantalla
         vidas.setText(Integer.toString(saltosAux));
         monedas.setText(Integer.toString(monedasAux));
         cofres.setText(Integer.toString(cofreIntentos));
 
-        // Primera interaccion automatica
-        solucion = randomImage();
+        // Sale siempre la primera posicion del array
+        solucion = lista.get(0).toLowerCase();
+        int resID = getResources().getIdentifier(solucion, "drawable", getPackageName());
+        imagen.setImageResource(resID);
+        imagen.setVisibility(View.VISIBLE);
+        lista.remove(0);
         solucionEdit = cambiaString(solucion);
         textoPista.setText(solucionEdit);
 
@@ -135,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     monedas(true); // Si la solucion es correcta se añade una moneda
                     solucion = randomImage();
+                    contadorAciertos++;
                     if (solucion != null) {
                         solucionEdit = cambiaString(solucion);
                         textoPista.setText(solucionEdit);
@@ -149,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         sonido.start();
                     }
                     creaMensaje("Respuesta incorrecta");
+                    contadorFallos++;
                 }
             }
         });
@@ -195,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage() {
-        if (lista.size() > (lista.size()-10)) { // Lo que se resta es el numero de preguntas
+        if (lista.size() > (tamanioLista-3)) { // Lo que se resta es el numero de preguntas
             int random = (int) (Math.random() * lista.size());
             String nombre = lista.get(random).toLowerCase();
             int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());
@@ -215,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             }
             // Puntuaciones
             creaAlerta("Juego finalizado", "Pistas usadas: " + contadorPistas).show();
+     
             // Se desactivan todos para que no se pueda interactuar
             botonEnviar.setEnabled(false);
             botonPista.setEnabled(false);
@@ -353,6 +362,7 @@ public class MainActivity extends AppCompatActivity {
     public void cofre(View v) {
         if (cofreIntentos > 0) {
             cofreIntentos--;
+            cofresUsados++;
             cofres.setText(Integer.toString(cofreIntentos));
             int nalt = (int) (Math.random() * 4 + 1); // Rango: 1-4
             monedas.setText(String.valueOf(monedasAux));
