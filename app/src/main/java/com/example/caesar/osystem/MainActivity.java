@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
      * @return devuelve el valor de la imagen
      */
     public String randomImage() {
-        if (lista.size() > (tamanioLista-3)) { // Lo que se resta es el numero de preguntas
+        if (lista.size() > (tamanioLista-10)) { // Lo que se resta es el numero de preguntas
             int random = (int) (Math.random() * lista.size());
             String nombre = lista.get(random).toLowerCase();
             int resID = getResources().getIdentifier(nombre, "drawable", getPackageName());

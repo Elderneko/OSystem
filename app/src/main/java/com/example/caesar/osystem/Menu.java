@@ -80,8 +80,7 @@ public class Menu extends AppCompatActivity {
 
     public void info(View v){
         creaAlerta("Tutorial","Existen dos modos de juego:\n" +
-                "Modo fácil: tienes ayudas desde cofres, monedas y saltos.\n" +
-                "Modo difícil: no tienes ayudas y por cada error pierdes una vida.\n\n" +
+                "-Modo fácil: tienes ayudas desde cofres, monedas y saltos.\n" +
                 "Trabajo realizado por: Cesar, Javier, Rubén, David y Oliver").show();
     }
 }
